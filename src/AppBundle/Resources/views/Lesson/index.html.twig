@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <header>
+        <br><br><br>
+        <h1 class="page-header">Список ваших пар, {{ app.user.username }}</h1>
+        <table class="table table-responsive table-hover">
+            <thead>
+                <td>Дата</td>
+                <td>Учитель</td>
+                <td>Курс</td>
+                <td>Тип занятия</td>
+                <td>С тестом/Без теста</td>
+                <td>Аудитория</td>
+            </thead>
+            <tbody>
+                {% for lesson in lessons %}
+                    {% if is_granted("ROLE_TEACHER") %}
+                        {% for teacher in teachers %}
+                            {% if lesson.teacher.subject.name == teacher.subject.name and app.user.username == teacher.account %}
+                                <tr id="{{ lesson.id }}">
+                                    <td>{{ lesson.eDate}}</td>
+                                    <td>{{ lesson.teacher.name }}</td>
+                                    <td>{{ lesson.teacher.subject.name }}</td>
+                                    <td>{{ lesson.category.name }}</td>
+                                    <td>
+                                        {% if lesson.isTest == 1 %} С тестом
+                                        {% elseif lesson.isTest == 0 %} Без теста{% endif %}
+                                    </td>
+                                    <td>{{ lesson.classroom }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% if is_granted("ROLE_STUDENT") %}
+                        {% for student in students %}
+                            {% if lesson.teacher.subject.name == student.subject.name and app.user.username == student.account %}
+                                <tr id="{{ lesson.id }}">
+                                    <td>{{ lesson.eDate}}</td>
+                                    <td>{{ lesson.teacher.name }}</td>
+                                    <td>{{ lesson.teacher.subject.name }}</td>
+                                    <td>{{ lesson.category.name }}</td>
+                                    <td>
+                                        {% if lesson.isTest == 1 %} С тестом
+                                        {% elseif lesson.isTest == 0 %} Без теста{% endif %}
+                                    </td>
+                                    <td>{{ lesson.classroom }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if is_granted("ROLE_TEACHER") %}
+            <a href="/lessons/create" class="btn btn-primary">Добавить</a>
+            <a href="/lessons/delete/" class="btn btn-danger" id="delete">Удалить</a>
+            <a href="/lessons/edit/" class="btn btn-default" id="edit">Редактировать</a>
+        {% endif %}
+    {#    <h1 class="page-header">Lessons</h1>
+        <table class="table table-responsive table-hover">
+            <thead>
+            <th>Date</th>
+            <th>Teacher</th>
+            <th>Category</th>
+            <th>Test</th>
+            <th>Classroom</th>
+            </thead>
+            <tbody>
+
+            {% for lesson in lessons %}
+                <tr id="{{ lesson.id }}">
+                    <td>{{ lesson.eDate}}</td>
+                    <td>{{ lesson.teacher.name }}</td>
+                    <td>{{ lesson.category.name }}</td>
+                    <td>
+                        {% if lesson.isTest == 1 %} With test
+                        {% elseif lesson.isTest == 0 %} Without test {% endif %}
+                    </td>
+                    <td>{{ lesson.classroom }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="/lessons/create" class="btn btn-primary">ADD</a>
+        <a href="#" class="btn btn-danger hidden" id="delete">DELETE</a>
+        <a href="#" class="btn btn-default hidden" id="edit">EDIT</a>#}
+    </header>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $( document ).ready(function() {
+            $("tr").on('click',function( event ) {
+                $("#delete").removeClass("hidden");
+                $("#edit").removeClass("hidden");
+                $("tr").removeClass('active');
+                $(this).not("thead tr").addClass('active');
+                $("#delete").attr('href','/lessons/delete/'+event.target.parentNode.id);
+                $("#edit").attr('href','/lessons/edit/'+event.target.parentNode.id);
+            });
+        });
+    </script>
+{% endblock %}

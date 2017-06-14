@@ -1,0 +1,107 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Subject:index{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <header>
+        <div class="container">
+            <div class="intro-text">
+                <div class="container">
+                    <h2>{{ subject.name }}</h2>
+                    <!--<h6>We offer exceptional service with complimentary hugs.</h6>-->
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6 wow fadeInLeft delay-05s">
+                            <div class="service-list">
+                                <div class="service-list-col1">
+                                    {#<i class="fa-paw"></i>#}
+                                    <br>
+                                    <br>
+                                    <br>
+                                </div>
+                                <div class="service-list-col2">
+                                    <h4>{{ subject.description }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <figure class="col-lg-8 col-sm-6  text-right wow fadeInUp delay-02s">
+                            <img src="{{ asset(['img/', subject.image]|join) }}" class="img-circle img-responsive" alt="">
+                            <br>
+                            <br>
+                            <a href="/" class="page-scroll btn btn-xl">На главную</a>
+                            {% if is_granted("ROLE_MANAGER") %}
+                                <a href="/subjects/delete/{{ subject.id }}" class="btn btn-danger" id="delete">Удалить</a>
+                                <a href="/subjects/edit/{{ subject.id }}" class="btn btn-default" id="edit">Редактировать</a>
+{#                                <h1 class="page-header">Список студентов данного курса</h1>
+                                        <table class="table table-responsive table-hover">
+                                            <thead>
+                                                <td>ФИО</td>
+                                                <td>Курс</td>
+                                                <td>Класс</td>
+                                                <td>Эл. почта</td>
+                                                <td>Адрес</td>
+                                                <td>Аккаут</td>
+                                            </thead>
+                                            <tbody>
+                                            {% for student in students %}
+                                                {% if student.subject.name == subject.name %}
+                                                    <tr id="{{ student.id }}">
+                                                        <td>{{ student.name }}</td>
+                                                        <td>{{ student.subject.name }}</td>
+                                                        <td>{{ student.grade }}</td>
+                                                        <td>{{ student.email }}</td>
+                                                        <td>{{ student.address }}</td>
+                                                        <td>{{ student.account }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <a href="#" class="btn btn-default" id="edit">Редактировать</a>#}
+                            {% endif %}
+                        </figure>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+{#    <h1 class="page-header">Subjects</h1>
+    <table class="table table-responsive table-hover tablesorter" id="#myTable">
+        <thead>
+        <th>Name</th>
+        <th>Description</th>
+        </thead>
+        <tbody>
+
+            <tr id="{{ subject.id }}">
+
+                <td>{{ subject.name }}</td>
+                <td>{{ subject.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="/subjects/create" class="btn btn-primary">ADD</a>
+    <a href="#" class="btn btn-danger hidden" id="delete">DELETE</a>
+    <a href="#" class="btn btn-default hidden" id="edit">EDIT</a>#}
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $( document ).ready(function() {
+            $("tr").on('click',function( event ) {
+                $("#delete").removeClass("hidden");
+                $("#edit").removeClass("hidden");
+                $("tr").removeClass('active');
+                $(this).not("thead tr").addClass('active');
+                $("#delete").attr('href','/subjects/delete/'+event.target.parentNode.id);
+                $("#edit").attr('href','/subjects/edit/'+event.target.parentNode.id);
+                $("#joinCourse").attr('href','/subjects/edit/'+event.target.parentNode.id);
+            });
+        });
+    </script>
+{% endblock %}

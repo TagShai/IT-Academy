@@ -1,0 +1,34 @@
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+company:
+    path:  /companies/{id}
+    defaults: { _controller: "AppBundle:Company:show" }
+    requirements:
+        methods:  GET
+        id: \d+
+
+subject:
+    path:  /subjects/{id}
+    defaults: { _controller: "AppBundle:Subject:show" }
+    requirements:
+        methods:  GET
+        id: \d+
+
+event:
+    path:  /events/{id}
+    defaults: { _controller: "AppBundle:Event:show" }
+    requirements:
+        methods:  GET
+        id: \d+
+
+profile:
+    path:  /profile/{id}
+    defaults: { _controller: "FOSUserBundle:Profile:show" }
+    requirements:
+        methods:  GET
+        id: \d+

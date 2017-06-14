@@ -1,0 +1,75 @@
+{% extends "::base.html.twig" %}
+{% block body %}
+{#    <h1 class="page-header">Events</h1>
+    <table class="table table-responsive table-hover">
+        <thead>
+        <th>Teacher</th>
+        <th>Event Category</th>
+        <th>Event Type</th>
+        <th>Classroom</th>
+        <th>Date</th>
+        </thead>
+        <tbody>
+
+        {% for event in events %}
+            <tr id="{{ event.id }}">
+
+                <td><a href="works/teacher/{{ event.teacher.id }}">{{ event.teacher.name|default("Not set") }}</a></td>
+                <td><a href="works/category/{{ event.category.id }}">{{ event.category.name }}</a></td>
+                <td>{% if event.isTest==1 %}<a href="/testwork">With test</a>{% else %}<a href="/classwork">Without test</a>{% endif %}</td>
+                <td>{{ event.classroom|default("-") }}</td>
+                <td>{{ event.eDate|default("-") }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="/events/create" class="btn btn-primary">ADD</a>
+    <a href="#" class="btn btn-danger hidden" id="delete">DELETE</a>
+    <a href="#" class="btn btn-default hidden" id="edit">EDIT</a>#}
+
+    <!-- Services Section -->
+    <section id="services" class="bg-light-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Новости IT-академии</h2>
+                </div>
+            </div>
+            <div class="row text-center">
+                {% for event in events %}
+                    <div class="col-md-4">
+                        <span class="">
+                            <a href="/events/{{ event.id }}" class="btn btn-default" id="edit">
+                                <img class="img-circle img-responsive" src="{{ asset(['img/news/', event.image]|join) }}" />
+                            </a>
+                        </span>
+                        <h4 class="service-heading">{{ event.topic }}</h4>
+                        <p class="text-muted">{{ event.description }}</p>
+                        <p class="text-muted">{{ event.eDate }}</p>
+                    </div>
+                {% endfor %}
+                <a href="/" class="page-scroll btn btn-xl">На главную</a>
+            </div>
+        </div>
+    </section>
+
+    </body>
+    </html>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $( document ).ready(function() {
+            $("tr").on('click',function( event ) {
+                $("#delete").removeClass("hidden");
+                $("#edit").removeClass("hidden");
+                $("tr").removeClass('active');
+                $(this).not("thead tr").addClass('active');
+                $("#delete").attr('href','/events/delete/'+event.target.parentNode.id);
+                $("#edit").attr('href','/events/edit/'+event.target.parentNode.id);
+            });
+        });
+    </script>
+{% endblock %}

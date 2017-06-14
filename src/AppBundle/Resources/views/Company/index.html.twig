@@ -1,0 +1,91 @@
+{% extends "::base.html.twig" %}
+{% block body %}
+
+    <header>
+        <div class="container">
+            <div class="intro-text">
+                <div class="container">
+                    <h2>{{ company.name }}</h2>
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6 wow fadeInLeft delay-05s">
+                            <div class="service-list">
+                                <div class="service-list-col1">
+                                    {#<i class="fa-paw"></i>#}
+                                    <br><br><br>
+                                </div>
+                                <div class="service-list-col2">
+                                    <h4>{{ company.description }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <figure class="col-lg-8 col-sm-6  text-right wow fadeInUp delay-02s">
+                            <img src="{{ asset(['img/companies/', company.image]|join) }}" class="img-circle img-responsive" alt="">
+                            <br>
+                            <a href="{{ company.site }}" class="page-scroll btn btn-xl">Перейти на сайт</a>
+                            <a href="/" class="page-scroll btn btn-xl">На главную</a>
+                            {% if is_granted("ROLE_MANAGER") %}
+                                <a href="/companies/delete/{{ company.id }}" class="btn btn-danger" id="delete">Удалить</a>
+                                <a href="/companies/edit/{{ company.id }}" class="btn btn-default" id="edit">Редактировать</a>
+                            {% endif %}
+                        </figure>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+{#    <h1 class="page-header">Companies</h1>
+    <table class="table table-responsive table-hover tablesorter" id="#myTable">
+        <thead>
+        <th>Name</th>
+        <th>Description</th>
+        </thead>
+        <tbody>
+
+        #}{#{% for company in companies %}#}{#
+            <tr id="{{ company.id }}">
+
+                <td>{{ company.name }}</td>
+                <td>{{ company.description }}</td>
+            </tr>
+        #}{#{% endfor %}#}{#
+        </tbody>
+    </table>
+    <a href="/companies/create" class="btn btn-primary">ADD</a>
+    <a href="#" class="btn btn-danger hidden" id="delete">DELETE</a>
+    <a href="#" class="btn btn-default hidden" id="edit">EDIT</a>#}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $( document ).ready(function() {
+            $("a").on('click',function( event ) {
+                $("#delete").removeClass("hidden");
+                $("#edit").removeClass("hidden");
+                $("tr").removeClass('active');
+                $(this).not("thead tr").addClass('active');
+                $("#delete").attr('href','/companies/delete/'+event.target.parentNode.id);
+                $("#edit").attr('href','/companies/edit/'+event.target.parentNode.id);
+            });
+        });
+    </script>
+{% endblock %}
+
+{#
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $( document ).ready(function() {
+            $("tr").on('click',function( event ) {
+                $("#delete").removeClass("hidden");
+                $("#edit").removeClass("hidden");
+                $("tr").removeClass('active');
+                $(this).not("thead tr").addClass('active');
+                $("#delete").attr('href','/companies/delete/'+event.target.parentNode.id);
+                $("#edit").attr('href','/companies/edit/'+event.target.parentNode.id);
+            });
+        });
+    </script>
+{% endblock %}#}

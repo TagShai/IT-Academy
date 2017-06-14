@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <header>
+        <br><br><br>
+        <h1 class="page-header">Учителя</h1>
+        <table class="table table-responsive table-hover">
+            <thead>
+                <td>ФИО</td>
+                <td>Предмет</td>
+                <td>Аккаунт</td>
+            </thead>
+            <tbody>
+                {% for teacher in teachers %}
+                    <tr id="{{ teacher.id }}">
+                        <td>{{ teacher.name}}</td>
+                        <td>{{ teacher.subject.name }}</td>
+                        <td>{{ teacher.account }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/teachers/create" class="btn btn-primary">Добавить</a>
+        <a href="#" class="btn btn-danger hidden" id="delete">Удалить</a>
+        <a href="#" class="btn btn-default hidden" id="edit">Редактировать</a>
+    </header>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $( document ).ready(function() {
+            $("tr").on('click',function( event ) {
+                $("#delete").removeClass("hidden");
+                $("#edit").removeClass("hidden");
+                $("tr").removeClass('active');
+                $(this).not("thead tr").addClass('active');
+                $("#delete").attr('href','/teachers/delete/'+event.target.parentNode.id);
+                $("#edit").attr('href','/teachers/edit/'+event.target.parentNode.id);
+            });
+        });
+    </script>
+{% endblock %}

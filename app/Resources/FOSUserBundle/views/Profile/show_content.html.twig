@@ -1,0 +1,37 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block body %}
+        <div class="fos_user_user_show">
+            <br>
+            {% if is_granted("ROLE_STUDENT") %}
+                {% for student in students %}
+                    {% if student.account == app.user.username %}
+                        <div><b>Личная информация</b></div>
+                        <div><b>имя пользователя: </b>{{ student.name }}</div>
+                        <div><b>адрес электронной почты: </b>{{ student.email }}</div>
+                        <div><b>адрес: </b>{{ student.address }}</div>
+                        <div><b>класс: </b>{{ student.grade }}</div>
+                        <div><b>выбранный курс: </b>{{ student.subject.name }}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+            {% if is_granted("ROLE_TEACHER") %}
+                {% for teacher in teachers %}
+                    {% if teacher.account == app.user.username %}
+                        <div><b>Личная информация</b></div>
+                        <div><b>имя пользователя: </b>{{ teacher.name }}</div>
+                        <div><b>курс: </b>{{ teacher.subject.name }}</div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+{% endblock %}
+
+{#
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="fos_user_user_show">
+    <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
+    <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+</div>#}

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1 class="page-header">Groups</h1>
+    <table class="table table-responsive table-hover">
+        <thead>
+        <th>Name</th>
+        <th>Subject</th>
+        <th>Teacher</th>
+        <th>Student count</th>
+        </thead>
+        <tbody>
+
+        {% for group in groups %}
+            <tr id="{{ group.id }}">
+
+                <td>{{ group.name }}</td>
+                <td>
+                    {% if group.teacher != null %}<a href="/groups/teacher/{{ group.teacher.id }}">{{ group.teacher.subject.name }}</a>
+                    {% elseif group.teacher == null %} - {% endif %}
+                </td>
+                <td>
+                    {% if group.teacher != null %}<a href="/groups/teacher/{{ group.teacher.id }}">{{ group.teacher.name }}</a>
+                    {% elseif group.teacher == null %} - {% endif %}
+                </td>
+                <td><a href="/students/group/{{ group.id }}">{{ group.students.count  }}</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="/groups/create" class="btn btn-primary">ADD</a>
+    <a href="#" class="btn btn-danger hidden" id="delete">DELETE</a>
+    <a href="#" class="btn btn-default hidden" id="edit">EDIT</a>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $( document ).ready(function() {
+            $("tr").on('click',function( event ) {
+                $("#delete").removeClass("hidden");
+                $("#edit").removeClass("hidden");
+                $("tr").removeClass('active');
+                $(this).not("thead tr").addClass('active');
+                $("#delete").attr('href','/groups/delete/'+event.target.parentNode.id);
+                $("#edit").attr('href','/groups/edit/'+event.target.parentNode.id);
+            });
+        });
+    </script>
+{% endblock %}

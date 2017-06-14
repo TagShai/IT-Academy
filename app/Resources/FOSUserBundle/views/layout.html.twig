@@ -1,0 +1,80 @@
+{#{% extends "::base.html.twig" %}#}
+{% extends "::base.html.twig" %}
+
+{% block body %}
+
+    <header>
+        <div class="intro-text">
+            <div class="intro-lead-in">
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                Добро пожаловать, <b>{{ app.user.username }}</b> |
+                        <a href="{{ path('fos_user_security_logout') }}" class="btn btn-primary">
+                            {{ 'разлогиниться'|trans({}, 'FOSUserBundle') }}
+                        </a>
+                        <a href="/#page-top" class="btn btn-primary">На главную</a>
+                        {% if is_granted("ROLE_TEACHER") or is_granted("ROLE_STUDENT") %}
+                            <a href="/lessons" class="btn btn-primary">Список уроков</a>
+                        {% endif %}
+                        {% if is_granted("ROLE_MANAGER") %}
+                            <a href="/students" class="btn btn-primary">Список студентов</a>
+                            <a href="/teachers" class="btn btn-primary">Список учителей</a>
+                            <a href="/events/create" class="btn btn-primary">Добаить событие</a>
+                            <a href="/companies/create" class="btn btn-primary">Добавить компанию</a>
+                            <a href="/subjects/create" class="btn btn-primary">Добавить предмет</a>
+                        {% endif %}
+            {% else %}
+                {#<a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>#}
+            {% endif %}
+
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="flash-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+
+        <div>
+            {% block fos_user_content %}
+            {% endblock fos_user_content %}
+        </div>
+
+            </div>
+        </div>
+
+    </header>
+
+{% endblock %}
+
+{#
+{% extends "::base.html.twig" %}
+{% block body %}
+        <div>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                Logged as {{ app.user.username }} |
+                <a href="{{ path('fos_user_security_logout') }}">
+                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                </a>
+            {% else %}
+                <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+            {% endif %}
+        </div>
+
+        {% if app.request.hasPreviousSession %}
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="flash-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+
+        <div>
+            {% block fos_user_content %}
+            {% endblock fos_user_content %}
+        </div>
+
+{% endblock %}#}

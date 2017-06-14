@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <header>
+        <br><br><br>
+        <h1 class="page-header">Студенты</h1>
+        <table class="table table-responsive table-hover">
+            <thead>
+                <td>ФИО</td>
+                <td>Курс</td>
+                <td>Класс</td>
+                <td>Эл. почта</td>
+                <td>Адрес</td>
+                <td>Аккаут</td>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr id="{{ student.id }}">
+                        <td>{{ student.name }}</td>
+                        <td><a href="/students/group/{{ student.subject.id }}">{{ student.subject.name }}</a></td>
+                        <td>{{ student.grade }}</td>
+                        <td>{{ student.email }}</td>
+                        <td>{{ student.address }}</td>
+                        <td>{{ student.account }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/students/create" class="btn btn-primary">Добавить</a>
+        <a href="#" class="btn btn-danger hidden" id="delete">Удалить</a>
+        <a href="#" class="btn btn-default hidden" id="edit">Редактировать</a>
+    </header>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $( document ).ready(function() {
+            $("tr").on('click',function( event ) {
+                $("#delete").removeClass("hidden");
+                $("#edit").removeClass("hidden");
+                $("tr").removeClass('active');
+                $(this).not("thead tr").addClass('active');
+                $("#delete").attr('href','/students/delete/'+event.target.parentNode.id);
+                $("#edit").attr('href','/students/edit/'+event.target.parentNode.id);
+            });
+        });
+    </script>
+{% endblock %}

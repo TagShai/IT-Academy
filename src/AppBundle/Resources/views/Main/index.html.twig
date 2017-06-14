@@ -1,0 +1,149 @@
+{#{% extends "::base.html.twig" %}#}
+{% extends 'base.html.twig' %}
+
+{% block title %}AppBundle:Main:index{% endblock %}
+
+{% block body %}
+{#<h1>Welcome to IT-Academy</h1>#}
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-lead-in">IT-академия "МИР будущего" (Математика, Информатика и Робототехника будущего") факультета математики и информационных технологий</div>
+                <div class="intro-heading">Набор уже открыт</div>
+                <a href="#services" class="page-scroll btn btn-xl">Узнать больше</a>
+                <a href="tel:+375298403938" class="page-scroll btn btn-xl">Заказать звонок</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Services Section -->
+    <section id="services" class="bg-light-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">О IT-академии</h2>
+                    <h3 class="section-subheading text-muted">Организационное собрание для родителей и учащихся состоится <span style="color:red;">1 июня 2017г. в 19:00 в актовом зале главного корпуса</span> ВГУ
+                        имени П.М Машерова (Московский пр-т, 33). Занятия будут проходить на базе факультета математики и информационных технологий. Учебным планом предусмотрено 50ч занятий (по 2ч в неделю)
+                        <div>Начало занятий - <span style="color:red;">сентябрь 2017г.</span></div> <div>Обучение на платной основе.</div><div>Ориентировочная стоимость обучения (за учебный год 1 предмет):
+                            <span style="color:red;">120 рублей</span></h3>
+                </div>
+            </div>
+            <div class="row text-center">
+                {% for event in events %}
+                    <div class="col-md-4">
+                        <span class="">
+                            <a href="/events/{{ event.id }}">
+                                <img class="img-circle img-responsive" src="{{ asset(['img/news/', event.image]|join) }}" />
+                            </a>
+                        </span>
+                        <h4 class="service-heading">{{ event.topic }}</h4>
+                        <p class="text-muted">{{ event.description }}</p>
+                        <p class="text-muted">{{ event.eDate }}</p>
+                    </div>
+                {% endfor %}
+
+                <a href="/events" class="page-scroll btn btn-xl">Полный список новостей</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Список курсов</h2>
+                    <h3 class="section-subheading text-muted">IT-Академия "МИр будущего" объявляет приём учащихся 5-11 классов на 2017-2018 учебный год на следующие курсы</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="timeline">
+                        {% for subject in subjects %}
+                            {% if subject.id % 2 != 0 %}
+                                <li>
+                                    <div class="timeline-image">
+                                        <a href="/subjects/{{ subject.id }}"><img class="img-circle img-responsive" src="{{ asset(['img/', subject.image]|join) }}" alt=""></a>
+                                    </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <a href="/subjects/{{ subject.id }}"><h4>{{ subject.name }}</h4></a>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p class="text-muted">{{ subject.description }}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endif %}
+                            {% if subject.id % 2 == 0 %}
+                                <li class="timeline-inverted">
+                                    <div class="timeline-image">
+                                        <a href="/subjects/{{ subject.id }}"><img class="img-circle img-responsive" src="{{ asset(['img/', subject.image]|join) }}" alt=""></a>
+                                    </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <a href="/subjects/{{ subject.id }}"><h4>{{ subject.name }}</h4></a>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p class="text-muted">{{ subject.description }}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        <!--<li class="timeline-inverted">
+                            <div class="timeline-image">
+                                <h4>Be Part
+                                    <br>Of Our
+                                    <br>Story!</h4>
+                            </div>
+                        </li>-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Companies Aside -->
+    <aside class="clients" id="companies">
+        <div class="container">
+            <div class="row">
+                {% for company in companies %}
+                    <div class="col-md-3 col-sm-6">
+                        <a href="/companies/{{ company.id }}">
+                            <img src="{{ asset(['img/companies/logos/', company.image]|join) }}" class="img-responsive img-centered" alt="">
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </aside>
+
+
+    <!-- Contacts Section -->
+    <section id="contacts" class="container">
+        <div class="row">
+            <!--<div class="col-sm-1"></div>-->
+            <div class="col-sm-9">
+                <h5>МЫ НАХОДИМСЯ: г.Витебск, Московский проспект 33, ауд. 316 и 318</h5>
+                <br>
+                <h5>ТЕЛЕФОН: <a href="tel:+375298403938">+375 (33) 317-95-02</a></h5>
+                <br>
+                <h5>САЙТ ФАКУЛЬТЕТА: mf.vsu.by</h5>
+            </div>
+            <div class="col-sm-3">
+                <img src="img/footer.png" class="img-responsive img-centered" alt="">
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer container text-center">
+        <h5><b>Copyright &copy; IT-Academy 2017</b></h5>
+    </footer>
+
+
+{% endblock %}
